@@ -8,10 +8,8 @@ use CodeIgniter\Email\Email;
 
 if (!function_exists('send_email'))
 {
-    function send_email(Email $email, array $options = [], &$error = null)
+    function send_email(Email $email, &$error = null)
     {
-        $email->initialize($options);
-
         $return = $email->send();
 
         if (!$return)
@@ -32,11 +30,11 @@ if (!function_exists('send_email'))
 
 if (!function_exists('compose_email'))
 {
-    function compose_email(string $view, array $params = []) : Email
+    function compose_email(string $view, array $params = [], array $options = []) : Email
     {
         $message = view($view, $params, ['saveData' => false]);
 
-        $view = Services::renderer();
+        $view = service('renderer');
 
         $data = $view->getData();
 
@@ -46,7 +44,9 @@ if (!function_exists('compose_email'))
 
         $email = single_service('email');
 
-        $email->initialize(['mailType' => $mailType]);
+        $options['mailType'] = $mailType;
+
+        $email->initialize($options);
 
         if ($subject)
         {
