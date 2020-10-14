@@ -1,4 +1,9 @@
 {
     "name": "basic-app/email-helper",
-    "license": "MIT"
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "BasicApp\\EmailHelper\\" : ""
+        }
+    }
 }
