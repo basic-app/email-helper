@@ -4,9 +4,11 @@
  * @license MIT
  * @link https://basic-app.com
  */
+use CodeIgniter\Email\Email;
+
 if (!function_exists('send_email'))
 {
-    function send_email($email, array $options = [], &$error = null)
+    function send_email(Email $email, array $options = [], &$error = null)
     {
         $email->initialize($options);
 
@@ -30,7 +32,7 @@ if (!function_exists('send_email'))
 
 if (!function_exists('compose_email'))
 {
-    function compose_email(string $view, array $params = [])
+    function compose_email(string $view, array $params = []) : Email
     {
         $message = view($view, $params, ['saveData' => false]);
 
