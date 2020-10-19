@@ -5,11 +5,19 @@
  * @link https://basic-app.com
  */
 use CodeIgniter\Email\Email;
+use BasicApp\EmailHelper\EmailHelperEvents;
 
 if (!function_exists('send_email'))
 {
     function send_email(Email $email, &$error = null)
     {
+        $result = EmailHelperEvents::sendEmail($email, $error);
+
+        if ($result !== null)
+        {
+            return $result;
+        }
+
         $return = $email->send();
 
         if (!$return)
@@ -32,6 +40,13 @@ if (!function_exists('compose_email'))
 {
     function compose_email(string $view, array $params = [], array $options = []) : Email
     {
+        $email = EmailHelperEvents::composeEmail($view, $params, $options);
+
+        if ($email)
+        {
+            return $email;
+        }
+
         $message = view($view, $params, ['saveData' => false]);
 
         $view = service('renderer');
